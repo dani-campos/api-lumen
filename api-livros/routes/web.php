@@ -15,13 +15,15 @@ $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
-$router->group(['prefix' => '/api'], function () use ($router) {
+$router->group(['prefix' => '/api', 'middleware' => 'auth'], function () use ($router) {
     $router->group(['prefix' => 'livros'], function () use ($router) {
         $router->post('', 'LivrosController@store');
         $router->get('', 'LivrosController@index');
         $router->get('{id}', 'LivrosController@show');
         $router->put('{id}', 'LivrosController@update');
         $router->delete('{id}', 'LivrosController@destroy');
+
+        $router->get('{livroId}/paginas', 'PaginasController@buscaPorLivro');
     });
 
     $router->group(['prefix' => 'paginas'], function () use ($router) {
@@ -32,3 +34,5 @@ $router->group(['prefix' => '/api'], function () use ($router) {
         $router->delete('{id}', 'PaginasController@destroy');
     });
 });
+
+$router->post('/api/login', 'TokenController@gerarToken');
