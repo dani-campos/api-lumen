@@ -11,4 +11,13 @@ class PaginasController extends BaseController
         $this->classe = Pagina::class;
     }
 
+    public function buscaPorLivro(int $livroId)
+    {
+        $paginas = Pagina::query()
+            ->where('livro_id', $livroId)
+            ->paginate();
+
+        return $paginas;
+    }
+
 }
